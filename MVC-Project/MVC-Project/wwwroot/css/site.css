@@ -20,3 +20,29 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.model-window {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+main {
+    height: 100%;
+}
+
+footer, header {
+    height: 60px;
+}
+
+.bg-div {
+    width: 100%;
+    height: calc(100% - 120px);
+    background-color: rgba(101, 158, 188, 0.5);
+    z-index: -1;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    border-radius: 50px;
+}
