@@ -15,7 +15,7 @@ namespace MVC_Project.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("Authorization");
         }
 
         public IActionResult Privacy()

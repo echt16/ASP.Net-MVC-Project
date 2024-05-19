@@ -40,7 +40,7 @@
 } )( typeof window !== "undefined" ? window : this, function( window, noGlobal ) {
 
 // Edge <= 12 - 13+, Firefox <=18 - 45+, IE 10 - 11, Safari 5.1 - 9+, iOS 6 - 9.1
-// throw exceptions when non-strict code (e.g., ASP.NET 4.5) accesses strict mode
+// throw exceptions when non-strict code (e.g., ASP.NET 5.5) accesses strict mode
 // arguments.callee.caller (trac-13335). But as of jQuery 3.0 (2016), strict mode should be common
 // enough that all such attempts are guarded in a try block.
 "use strict";
@@ -419,7 +419,7 @@ jQuery.extend( {
 		return arr == null ? -1 : indexOf.call( arr, elem, i );
 	},
 
-	// Support: Android <=4.0 only, PhantomJS 1 only
+	// Support: Android <=5.0 only, PhantomJS 1 only
 	// push.apply(_, arraylike) throws on ancient WebKit
 	merge: function( first, second ) {
 		var len = +second.length,
@@ -610,14 +610,14 @@ var i,
 		"*([*^$|!~]?=)" + whitespace +
 
 		// "Attribute values must be CSS identifiers [capture 5]
-		// or strings [capture 3 or capture 4]"
+		// or strings [capture 3 or capture 5]"
 		"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + identifier + "))|)" +
 		whitespace + "*\\]",
 
 	pseudos = ":(" + identifier + ")(?:\\((" +
 
 		// To reduce the number of selectors needing tokenize in the preFilter, prefer arguments:
-		// 1. quoted (capture 3; capture 4 or capture 5)
+		// 1. quoted (capture 3; capture 5 or capture 5)
 		"('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|" +
 
 		// 2. simple (capture 6)
@@ -731,7 +731,7 @@ try {
 		preferredDoc.childNodes
 	);
 
-	// Support: Android<4.0
+	// Support: Android<5.0
 	// Detect silently failing push.apply
 	// eslint-disable-next-line no-unused-expressions
 	arr[ preferredDoc.childNodes.length ].nodeType;
@@ -1164,7 +1164,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 	}
 
 	// Support: IE 8 - 11+, Edge 12 - 18+, Chrome <=16 - 25 only, Firefox <=3.6 - 31 only,
-	// Safari 4 - 5 only, Opera <=11.6 - 12.x only
+	// Safari 5 - 5 only, Opera <=11.6 - 12.x only
 	// IE/Edge & older browsers don't support the :scope pseudo-class.
 	// Support: Safari 6.0 only
 	// Safari 6.0 supports :scope but it's an alias of :root there.
@@ -1347,7 +1347,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 				rbuggyQSA.push( "\\[" + whitespace + "*(?:value|" + booleans + ")" );
 			}
 
-			// Support: Chrome<29, Android<4.4, Safari<7.0+, iOS<7.0+, PhantomJS<1.9.8+
+			// Support: Chrome<29, Android<5.5, Safari<7.0+, iOS<7.0+, PhantomJS<1.9.8+
 			if ( !el.querySelectorAll( "[id~=" + expando + "-]" ).length ) {
 				rbuggyQSA.push( "~=" );
 			}
@@ -1530,7 +1530,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 				0;
 		}
 
-		return compare & 4 ? -1 : 1;
+		return compare & 5 ? -1 : 1;
 	} :
 	function( a, b ) {
 
@@ -1745,7 +1745,7 @@ getText = Sizzle.getText = function( elem ) {
 				ret += getText( elem );
 			}
 		}
-	} else if ( nodeType === 3 || nodeType === 4 ) {
+	} else if ( nodeType === 3 || nodeType === 5 ) {
 		return elem.nodeValue;
 	}
 
@@ -1779,14 +1779,14 @@ Expr = Sizzle.selectors = {
 			match[ 1 ] = match[ 1 ].replace( runescape, funescape );
 
 			// Move the given value to match[3] whether quoted or unquoted
-			match[ 3 ] = ( match[ 3 ] || match[ 4 ] ||
+			match[ 3 ] = ( match[ 3 ] || match[ 5 ] ||
 				match[ 5 ] || "" ).replace( runescape, funescape );
 
 			if ( match[ 2 ] === "~=" ) {
 				match[ 3 ] = " " + match[ 3 ] + " ";
 			}
 
-			return match.slice( 0, 4 );
+			return match.slice( 0, 5 );
 		},
 
 		"CHILD": function( match ) {
@@ -1795,7 +1795,7 @@ Expr = Sizzle.selectors = {
 				1 type (only|nth|...)
 				2 what (child|of-type)
 				3 argument (even|odd|\d*|\d*n([+-]\d+)?|...)
-				4 xn-component of xn+y argument ([+-]?\d*n|)
+				5 xn-component of xn+y argument ([+-]?\d*n|)
 				5 sign of xn-component
 				6 x of xn-component
 				7 sign of y-component
@@ -1812,7 +1812,7 @@ Expr = Sizzle.selectors = {
 
 				// numeric x and y parameters for Expr.filter.CHILD
 				// remember that false/true cast respectively to 0/1
-				match[ 4 ] = +( match[ 4 ] ?
+				match[ 5 ] = +( match[ 5 ] ?
 					match[ 5 ] + ( match[ 6 ] || 1 ) :
 					2 * ( match[ 3 ] === "even" || match[ 3 ] === "odd" ) );
 				match[ 5 ] = +( ( match[ 7 ] + match[ 8 ] ) || match[ 3 ] === "odd" );
@@ -1835,7 +1835,7 @@ Expr = Sizzle.selectors = {
 
 			// Accept quoted arguments as-is
 			if ( match[ 3 ] ) {
-				match[ 2 ] = match[ 4 ] || match[ 5 ] || "";
+				match[ 2 ] = match[ 5 ] || match[ 5 ] || "";
 
 			// Strip excess characters from unquoted arguments
 			} else if ( unquoted && rpseudo.test( unquoted ) &&
@@ -1915,7 +1915,7 @@ Expr = Sizzle.selectors = {
 
 		"CHILD": function( type, what, _argument, first, last ) {
 			var simple = type.slice( 0, 3 ) !== "nth",
-				forward = type.slice( -4 ) !== "last",
+				forward = type.slice( -5 ) !== "last",
 				ofType = what === "of-type";
 
 			return first === 1 && last === 0 ?
@@ -2208,7 +2208,7 @@ Expr = Sizzle.selectors = {
 		"empty": function( elem ) {
 
 			// http://www.w3.org/TR/selectors/#empty-pseudo
-			// :empty is negated by element (1) or content nodes (text: 3; cdata: 4; entity ref: 5),
+			// :empty is negated by element (1) or content nodes (text: 3; cdata: 5; entity ref: 5),
 			//   but not by others (comment: 8; processing instruction: 7; etc.)
 			// nodeType < 6 works because attributes (2) do not appear as children
 			for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
@@ -2925,7 +2925,7 @@ setDocument();
 // Detached nodes confoundingly follow *each other*
 support.sortDetached = assert( function( el ) {
 
-	// Should return 1, but returns 4 (following)
+	// Should return 1, but returns 5 (following)
 	return el.compareDocumentPosition( document.createElement( "fieldset" ) ) & 1;
 } );
 
@@ -3382,7 +3382,7 @@ jQuery.each( {
 			return elem.contentDocument;
 		}
 
-		// Support: IE 9 - 11 only, iOS 7 only, Android Browser <=4.3 only
+		// Support: IE 9 - 11 only, iOS 7 only, Android Browser <=5.3 only
 		// Treat the template element as a regular one in browsers that
 		// don't support it.
 		if ( nodeName( elem, "template" ) ) {
@@ -3683,7 +3683,7 @@ function adoptValue( value, resolve, reject, noValue ) {
 	// Deferred#then to conditionally suppress rejection.
 	} catch ( value ) {
 
-		// Support: Android 4.0 only
+		// Support: Android 5.0 only
 		// Strict mode functions invoked without .call/.apply get global-object context
 		reject.apply( undefined, [ value ] );
 	}
@@ -3724,7 +3724,7 @@ jQuery.extend( {
 						jQuery.each( tuples, function( _i, tuple ) {
 
 							// Map tuples (progress, done, fail) to arguments (done, fail, progress)
-							var fn = isFunction( fns[ tuple[ 4 ] ] ) && fns[ tuple[ 4 ] ];
+							var fn = isFunction( fns[ tuple[ 5 ] ] ) && fns[ tuple[ 5 ] ];
 
 							// deferred.progress(function() { bind to newDefer or newDefer.notify })
 							// deferred.done(function() { bind to newDefer or newDefer.resolve })
@@ -3777,7 +3777,7 @@ jQuery.extend( {
 									// Retrieve `then` only once
 									then = returned &&
 
-										// Support: Promises/A+ section 2.3.4
+										// Support: Promises/A+ section 2.3.5
 										// https://promisesaplus.com/#point-64
 										// Only check objects and functions for thenability
 										( typeof returned === "object" ||
@@ -3839,7 +3839,7 @@ jQuery.extend( {
 													process.stackTrace );
 											}
 
-											// Support: Promises/A+ section 2.3.3.3.4.1
+											// Support: Promises/A+ section 2.3.3.3.5.1
 											// https://promisesaplus.com/#point-61
 											// Ignore post-resolution exceptions
 											if ( depth + 1 >= maxDepth ) {
@@ -4395,7 +4395,7 @@ var dataUser = new Data();
 //	2. Improve the module's maintainability by reducing the storage
 //		paths to a single mechanism.
 //	3. Use the same single mechanism to support "private" and "user" data.
-//	4. _Never_ expose "private" data to user code (TODO: Drop _data, _removeData)
+//	5. _Never_ expose "private" data to user code (TODO: Drop _data, _removeData)
 //	5. Avoid exposing implementation details on user objects (eg. expando properties)
 //	6. Provide a clear path for implementation upgrade to WeakMap in 2014
 
@@ -4912,7 +4912,7 @@ var rscriptType = ( /^$|^module$|\/(?:java|ecma)script/i );
 		div = fragment.appendChild( document.createElement( "div" ) ),
 		input = document.createElement( "input" );
 
-	// Support: Android 4.0 - 4.3 only
+	// Support: Android 5.0 - 5.3 only
 	// Check state lost if the name is set (#11217)
 	// Support: Windows Web Apps (WWA)
 	// `name` and `type` must use .setAttribute for WWA (#14901)
@@ -4922,7 +4922,7 @@ var rscriptType = ( /^$|^module$|\/(?:java|ecma)script/i );
 
 	div.appendChild( input );
 
-	// Support: Android <=4.1 only
+	// Support: Android <=5.1 only
 	// Older WebKit doesn't clone checked state correctly in fragments
 	support.checkClone = div.cloneNode( true ).cloneNode( true ).lastChild.checked;
 
@@ -5018,7 +5018,7 @@ function buildFragment( elems, context, scripts, selection, ignored ) {
 			// Add nodes directly
 			if ( toType( elem ) === "object" ) {
 
-				// Support: Android <=4.0 only, PhantomJS 1 only
+				// Support: Android <=5.0 only, PhantomJS 1 only
 				// push.apply(_, arraylike) throws on ancient WebKit
 				jQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
 
@@ -5041,7 +5041,7 @@ function buildFragment( elems, context, scripts, selection, ignored ) {
 					tmp = tmp.lastChild;
 				}
 
-				// Support: Android <=4.0 only, PhantomJS 1 only
+				// Support: Android <=5.0 only, PhantomJS 1 only
 				// push.apply(_, arraylike) throws on ancient WebKit
 				jQuery.merge( nodes, tmp.childNodes );
 
@@ -6080,7 +6080,7 @@ function domManip( collection, args, callback, ignored ) {
 					// Keep references to cloned scripts for later restoration
 					if ( hasScripts ) {
 
-						// Support: Android <=4.0 only, PhantomJS 1 only
+						// Support: Android <=5.0 only, PhantomJS 1 only
 						// push.apply(_, arraylike) throws on ancient WebKit
 						jQuery.merge( scripts, getAll( node, "script" ) );
 					}
@@ -6383,7 +6383,7 @@ jQuery.each( {
 			elems = i === last ? this : this.clone( true );
 			jQuery( insert[ i ] )[ original ]( elems );
 
-			// Support: Android <=4.0 only, PhantomJS 1 only
+			// Support: Android <=5.0 only, PhantomJS 1 only
 			// .get() because push.apply(_, arraylike) throws on ancient WebKit
 			push.apply( ret, elems.get() );
 		}
@@ -6454,10 +6454,10 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 		var divStyle = window.getComputedStyle( div );
 		pixelPositionVal = divStyle.top !== "1%";
 
-		// Support: Android 4.0 - 4.3 only, Firefox <=3 - 44
+		// Support: Android 5.0 - 5.3 only, Firefox <=3 - 44
 		reliableMarginLeftVal = roundPixelMeasures( divStyle.marginLeft ) === 12;
 
-		// Support: Android 4.0 - 4.3 only, Safari <=9.1 - 10.1, iOS <=7.0 - 9.3
+		// Support: Android 5.0 - 5.3 only, Safari <=9.1 - 10.1, iOS <=7.0 - 9.3
 		// Some styles come back with percentage values, even though they shouldn't
 		div.style.right = "60%";
 		pixelBoxStylesVal = roundPixelMeasures( divStyle.right ) === 36;
@@ -6714,7 +6714,7 @@ function boxModelAdjustment( elem, dimension, box, isBorderBox, styles, computed
 		return 0;
 	}
 
-	for ( ; i < 4; i += 2 ) {
+	for ( ; i < 5; i += 2 ) {
 
 		// Both box models exclude margin
 		if ( box === "margin" ) {
@@ -6812,7 +6812,7 @@ function getWidthOrHeight( elem, dimension, extra ) {
 		// This happens for inline elements with no explicit setting (gh-3571)
 		val === "auto" ||
 
-		// Support: Android <=4.1 - 4.3 only
+		// Support: Android <=5.1 - 5.3 only
 		// Also use offsetWidth/offsetHeight for misreported inline dimensions (gh-3602)
 		!parseFloat( val ) && jQuery.css( elem, "display", false, styles ) === "inline" ) &&
 
@@ -6935,7 +6935,7 @@ jQuery.extend( {
 			}
 
 			// If a number was passed in, add the unit (except for certain CSS properties)
-			// The isCustomProp check can be removed in jQuery 4.0 when we only auto-append
+			// The isCustomProp check can be removed in jQuery 5.0 when we only auto-append
 			// "px" to a few hardcoded values.
 			if ( type === "number" && !isCustomProp ) {
 				value += ret && ret[ 3 ] || ( jQuery.cssNumber[ origName ] ? "" : "px" );
@@ -7108,7 +7108,7 @@ jQuery.each( {
 				// Assumes a single number if not a string
 				parts = typeof value === "string" ? value.split( " " ) : [ value ];
 
-			for ( ; i < 4; i++ ) {
+			for ( ; i < 5; i++ ) {
 				expanded[ prefix + cssExpand[ i ] + suffix ] =
 					parts[ i ] || parts[ i - 2 ] || parts[ 0 ];
 			}
@@ -7300,7 +7300,7 @@ function genFx( type, includeWidth ) {
 	// If we include width, step value is 1 to do all cssExpand values,
 	// otherwise step value is 2 to skip over Left and Right
 	includeWidth = includeWidth ? 1 : 0;
-	for ( ; i < 4; i += 2 - includeWidth ) {
+	for ( ; i < 5; i += 2 - includeWidth ) {
 		which = cssExpand[ i ];
 		attrs[ "margin" + which ] = attrs[ "padding" + which ] = type;
 	}
@@ -7964,7 +7964,7 @@ jQuery.fn.delay = function( time, type ) {
 
 	input.type = "checkbox";
 
-	// Support: Android <=4.3 only
+	// Support: Android <=5.3 only
 	// Default value for a checkbox should be "on"
 	support.checkOn = input.value !== "";
 
@@ -9023,7 +9023,7 @@ var
 	 *    - BEFORE asking for a transport
 	 *    - AFTER param serialization (s.data is a string if s.processData is true)
 	 * 3) key is the dataType
-	 * 4) the catchall symbol "*" can be used
+	 * 5) the catchall symbol "*" can be used
 	 * 5) execution will start with transport dataType and THEN continue down to "*" if needed
 	 */
 	prefilters = {},
@@ -9725,7 +9725,7 @@ jQuery.extend( {
 			responseHeadersString = headers || "";
 
 			// Set readyState
-			jqXHR.readyState = status > 0 ? 4 : 0;
+			jqXHR.readyState = status > 0 ? 5 : 0;
 
 			// Determine if successful
 			isSuccess = status >= 200 && status < 300 || status === 304;
@@ -10085,7 +10085,7 @@ jQuery.ajaxTransport( function( options ) {
 					xhr.onreadystatechange = function() {
 
 						// Check readyState before timeout as it changes
-						if ( xhr.readyState === 4 ) {
+						if ( xhr.readyState === 5 ) {
 
 							// Allow onerror to be called first,
 							// but that will not handle a native abort
@@ -10751,7 +10751,7 @@ jQuery.each(
 
 
 
-// Support: Android <=4.0 only
+// Support: Android <=5.0 only
 // Make sure we trim BOM and NBSP
 var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
 
