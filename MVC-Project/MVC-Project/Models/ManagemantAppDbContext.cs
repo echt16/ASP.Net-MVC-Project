@@ -19,7 +19,10 @@ namespace MVC_Project.Models
         public DbSet<WorkerAdditional> WorkersAdditionals { get; set; }
         public DbSet<CustomerAdditional> CustomersAdditionals { get; set; }
         public DbSet<ContactDetail> ContactDetails { get; set; }
-        public ManagemantAppDbContext(DbContextOptions<ManagemantAppDbContext> options) : base(options) { }
+        public DbSet<Bid> Bids { get; set; }
+        public DbSet<Position> Positions { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public ManagemantAppDbContext(DbContextOptions<ManagemantAppDbContext> options) : base(options) { Database.EnsureCreated(); }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +33,7 @@ namespace MVC_Project.Models
                 .WithMany(u => u.Agreements)
                 .HasForeignKey(a => a.CustomerId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Agreement>()
                 .HasOne(a => a.Worker)
                 .WithMany(u => u.Agreements)
@@ -41,11 +45,13 @@ namespace MVC_Project.Models
                 .WithMany(u => u.Tasks)
                 .HasForeignKey(a => a.CustomerId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Task>()
                 .HasOne(a => a.Worker)
                 .WithMany(u => u.Tasks)
                 .HasForeignKey(a => a.WorkerId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
+
     }
 }

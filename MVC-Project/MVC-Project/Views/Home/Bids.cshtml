@@ -1,0 +1,93 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model BidsViewModel
+@{
+}
+
+<div class="div-table-view" id="div-table-view">
+    <p class="div-table-title">Bids</p>
+    <div class="div-table-items">
+        @for (int i = 0; i < Model.Bids.Count; i++)
+        {
+            <div class="div-table-item">
+                <input type="hidden" name="bidId" class="bidId" value="@Model.Bids[i].Id" />
+                <input type="hidden" name="bidId" class="login" value="@Model.Bids[i].User.LoginPassword.Login" />
+                <div class="div-table-item-image">
+                    <img src="@Model.Bids[i].User.ImageSrc" />
+                </div>
+                <div class="div-table-item-text">
+                    @Model.Bids[i].User.LoginPassword.Login
+                </div>
+                <div class="div-table-item-text">
+                    @Model.Bids[i].User.Firstname
+                </div>
+                <div class="div-table-item-text">
+                    @Model.Bids[i].User.Lastname
+                </div>
+                <div class="div-table-item-text justify-content-end">
+                    @Model.Bids[i].DateTime.ToString(@"HH:mm")<br />@Model.Bids[i].DateTime.ToString(@"dd.MM.yy")
+                </div>
+                <div class="div-table-item-btn">
+                    <button class="submit-btn" onclick="appoint(event)">Appoint</button>
+                </div>
+                <div class="div-table-item-btn">
+                    <form asp-controller="Home" asp-action="BidDelete" method="post">
+                        <input type="hidden" name="id" value="@Model.Bids[i].Id" />
+                        <button class="submit-btn" type="submit">Delete</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal-window" id="modal-window" style="display:none;">
+    <form class="modal-form" asp-controller="Home" asp-action="BidAppoint" method="post">
+        <div class="modal-form-group">
+            <img src="~/cancel.png" alt="Cancel" class="cancel" onclick="cancel()" />
+        </div>
+        <div class="modal-form-group">
+            <p class="modal-form-title">
+                Bid
+            </p>
+        </div>
+        <input type="hidden" name="formBidId" id="formBidId" />
+        <div class="modal-form-group">
+            <label class="modal-form-label">
+                Login:
+            </label>
+            <input type="text" id="modal-form-login" class="modal-form-input input" readonly />
+        </div>
+        <div class="modal-form-group">
+            <label class="modal-form-label">
+                Role:
+            </label>
+            <select class="modal-form-input input" name="roleId">
+                @for (int i = 0; i < Model.Roles.Count; i++)
+                {
+                    <option value="@Model.Roles[i].Id">@Model.Roles[i].Name</option>
+                }
+            </select>
+        </div>
+        <div class="modal-form-group">
+            <button type="submit" class="submit-btn">Appoint</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function appoint(event) {
+        let id = event.target.parentElement.parentElement.querySelector(".bidId").value;
+        let login = event.target.parentElement.parentElement.querySelector(".login").value;
+        document.querySelector("#modal-form-login").value = login;
+        document.querySelector("#formBidId").value = id;
+        document.querySelector("#div-table-view").style.display = "none";
+        document.querySelector("#modal-window").style.display = "flex";
+    }
+
+    function cancel() {
+        document.querySelector("#modal-window").style.display = "none";
+        document.querySelector("#div-table-view").style.display = "flex";
+    }
+</script>

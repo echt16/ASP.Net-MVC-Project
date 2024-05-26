@@ -1,0 +1,38 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<User>
+@{
+}
+
+<div class="div-table-view" id="div-table-view">
+    <p class="div-table-title">Users</p>
+    <div class="div-table-items">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <form asp-controller="Home" asp-action="CheckUser" method="post">
+                <div class="div-table-item">
+                    <input type="hidden" name="userId" class="userId" value="@Model[i].Id" />
+                    <div class="div-table-item-image">
+                        <img src="@Model[i].ImageSrc" />
+                    </div>
+                    <div class="div-table-item-text">
+                        @Model[i].LoginPassword.Login
+                    </div>
+                    <div class="div-table-item-text">
+                        @Model[i].Firstname
+                    </div>
+                    <div class="div-table-item-text">
+                        @Model[i].Lastname
+                    </div>
+                    <div class="div-table-item-text">
+                        @Model[i].Role.Name
+                    </div>
+                    <div class="div-table-item-btn">
+                        <button type="submit" class="submit-btn">Check</button>
+                    </div>
+                </div>
+            </form>
+        }
+    </div>
+</div>

@@ -10,7 +10,7 @@
         public int WorkerId {  get; set; }
         public User Worker { get; set; }
         public int? CustomerId {  get; set; }
-        public User? Customer { get; set; }
+        public Customer? Customer { get; set; }
         public int? AddressId { get; set; }
         public Address? Address { get; set; }
         public DateTime? Deadline { get; set; }

@@ -1,0 +1,115 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model AccountViewModel
+@{
+}
+
+
+
+
+<div class="view-data-container" id="view-data-container">
+    <table class="view-data-table">
+        <tr class="view-data-tr">
+            <td class="view-data-td">
+                <div class="view-data-img-div"><img src="@Model.ImgSrc" class="view-data-img" /></div>
+            </td>
+        </tr>
+        <tr class="view-data-tr">
+            <td class="view-data-td text-decor">@Model.Firstname</td>
+        </tr>
+        <tr class="view-data-tr">
+            <td class="view-data-td text-decor">@Model.Lastname</td>
+        </tr>
+        <tr class="view-data-tr">
+            <td class="view-data-td text-decor">@Model.Login</td>
+        </tr>
+        <tr class="view-data-tr">
+            <td class="view-data-td text-decor">
+                @for (int i = 0; i < Model.Password.Length; i++)
+                {
+                    <span>*</span>
+                }
+            </td>
+        </tr>
+        <tr class="view-data-tr">
+            <td class="view-data-td">
+                <button class="submit-btn" onclick="change()">Change</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="modal-window" id="modal-window">
+    <form id="form" onsubmit="submitClick(event)" class="modal-form" asp-controller="Home" asp-action="ChangeAccoutData" method="post">
+        <input type="hidden" name="userId" value="@Model.UserId" />
+        <div class="modal-form-group">
+            <img src="~/cancel.png" alt="Cancel" class="cancel" onclick="cancel()" />
+        </div>
+        <div class="modal-form-group">
+            <label class="modal-form-label">
+                Image:
+            </label>
+            <input type="text" name="imgSrc" id="imgSrc" value="@Model.ImgSrc" class="modal-form-input input" required />
+        </div>
+        <div class="modal-form-group">
+            <label class="modal-form-label">
+                Login:
+            </label>
+            <input type="text" name="login" class="modal-form-input input" value="@Model.Login" required />
+        </div>
+        <div class="modal-form-group">
+            <label class="modal-form-label">
+                Password:
+            </label>
+            <input type="password" name="password" class="modal-form-input input" value="@Model.Password" required />
+        </div>
+        <div class="modal-form-group">
+            <label class="modal-form-label">
+                Old password:
+            </label>
+            <input type="password" name="oldPassword" class="modal-form-input input" value="@Model.Password" required />
+        </div>
+        <div class="modal-form-group">
+            <label class="modal-form-label">
+                Password again:
+            </label>
+            <input type="password" name="password2" class="modal-form-input input" value="@Model.Password" required />
+        </div>
+        <div class="modal-form-group">
+            <label class="modal-form-label">
+                Firstname:
+            </label>
+            <input type="text" name="firstname" class="modal-form-input input" value="@Model.Firstname" required />
+        </div>
+        <div class="modal-form-group">
+            <label class="modal-form-label">
+                Lastname:
+            </label>
+            <input type="text" name="lastname" class="modal-form-input input" value="@Model.Lastname" required />
+        </div>
+        <div class="modal-form-group">
+            <button type="submit" class="submit-btn">Change</button>
+        </div>
+    </form>
+</div>
+
+<script name="Scripts">
+    document.querySelector("#modal-window").style.display = "none";
+    function cancel() {
+        document.querySelector("#modal-window").style.display = "none";
+        document.querySelector("#view-data-container").style.display = "flex";
+    }
+    function change() {
+        document.querySelector("#modal-window").style.display = "flex";
+        document.querySelector("#view-data-container").style.display = "none";
+    }
+    function submitClick(event) {
+        event.preventDefault();
+        var url = document.getElementById('imgSrc').value;
+        const img = new Image();
+        img.onload = function () { document.querySelector("#form").submit(); }
+        img.onerror = function () { alert(`unvalid src: ${url}`); }
+        img.src = url;
+    }
+</script>

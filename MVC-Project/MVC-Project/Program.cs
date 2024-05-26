@@ -8,7 +8,10 @@ builder.Services.AddControllersWithViews();
 string conn = builder.Configuration.GetConnectionString("ManagemantAppConn");
 builder.Services.AddDbContext<ManagemantAppDbContext>(options => options.UseSqlServer(conn));
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
 var app = builder.Build();
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

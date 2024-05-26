@@ -10,7 +10,7 @@
         public int StatusId { get; set; }
         public Status Status { get; set; }
         public int CustomerId { get; set; }
-        public User Customer { get; set; }
+        public Customer Customer { get; set; }
         public int WorkerId { get; set; }
         public User Worker { get; set; }
         public virtual List<AgreementService> AgreementsServices { get; set; }

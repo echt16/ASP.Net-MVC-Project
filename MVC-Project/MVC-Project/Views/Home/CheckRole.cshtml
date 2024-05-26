@@ -1,0 +1,57 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model RoleViewModel
+@{
+}
+
+<style>
+    .div-table-item-text {
+        overflow: visible;
+    }
+
+    input[type=checkbox] {
+        margin-right: 5px;
+    }
+
+    .submit-btn {
+        width: 100%;
+    }
+</style>
+
+
+<form asp-controller="Home" asp-action="ChangeRoleAccesses" method="post">
+    <div class="div-table-view" id="div-table-view">
+        <p class="div-table-title">@Model.Role.Name</p>
+        <input type="hidden" name="roleId" value="@Model.Role.Id" />
+        <div class="div-table-items">
+            <button type="submit" class="submit-btn">Change</button>
+            @{
+                int i = 0;
+                while (Model.AllAppAccess.Count > i)
+                {
+                    <div class="div-table-item">
+                        @for (int j = 0; j < 3; j++)
+                        {
+                            <div class="div-table-item-text">
+                                @if (Model.AppAccessForRole.Any(x => x.Id == Model.AllAppAccess[i].Id))
+                                {
+                                    <input class="form-check-input" type="checkbox" name="accesses" value="@Model.AllAppAccess[i].Id" checked /> @Model.AllAppAccess[i].Name
+                                }
+                                else
+                                {
+                                    <input class="form-check-input" type="checkbox" name="accesses" value="@Model.AllAppAccess[i].Id" /> @Model.AllAppAccess[i].Name
+                                }
+                            </div>
+                            i++;
+                            if (Model.AllAppAccess.Count <= i)
+                            {
+                                break;
+                            }
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</form>

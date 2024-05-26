@@ -1,0 +1,54 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model int
+@{
+    
+}
+
+<style>
+    main{
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .a-link{
+        align-self:center;
+    }
+</style>
+
+
+
+@switch (@Model)
+{
+    case 0:
+        {
+            <p class="error-message">Login already exists</p>
+            <a class="a-link" asp-controller="Home" asp-action="Registration">Registration</a>
+        }break;
+    case 1:
+        {
+            <p class="error-message">Password mismatch</p>
+            <a class="a-link" asp-controller="Home" asp-action="Registration">Registration</a>
+        }break;
+    case 2:
+        {
+            <p class="error-message">Could not find user</p>
+            <a class="a-link" asp-controller="Home" asp-action="Authorization">Authorization</a>
+        }break;
+    case 3:
+        {
+            <p class="error-message">You don`t have access</p>
+            <a class="a-link" asp-controller="Home" asp-action="Authorization">Authorization</a>
+        }break;
+    case 4:
+        {
+            <p class="error-message">Incorrect password</p>
+            <a class="a-link" asp-controller="Home" asp-action="Account">Account</a>
+        }break;
+    case 5:
+        {
+            <p class="error-message">Could not find user worker additional</p>
+            <a class="a-link" asp-controller="Home" asp-action="WorkerAdditional">WorkerAdditional</a>
+        }break;
+}

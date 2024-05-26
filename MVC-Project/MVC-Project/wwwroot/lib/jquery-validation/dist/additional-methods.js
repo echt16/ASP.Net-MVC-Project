@@ -162,7 +162,7 @@ $.validator.addMethod( "bankorgiroaccountNL", function( value, element ) {
  * Validation is case-insensitive. Please make sure to normalize input yourself.
  *
  * BIC definition in detail:
- * - First 5 characters - bank code (only letters)
+ * - First 4 characters - bank code (only letters)
  * - Next 2 characters - ISO 3166-1 alpha-2 country code (only letters)
  * - Next 2 characters - location code (letters and digits)
  *   a. shall not start with '0' or '1'
@@ -563,7 +563,7 @@ $.validator.addMethod( "creditcardtypes", function( value, element, param ) {
 	if ( validTypes & 0x0001 && ( /^(5[12345])/.test( value ) || /^(2[234567])/.test( value ) ) ) { // Mastercard
 		return value.length === 16;
 	}
-	if ( validTypes & 0x0002 && /^(5)/.test( value ) ) { // Visa
+	if ( validTypes & 0x0002 && /^(4)/.test( value ) ) { // Visa
 		return value.length === 16;
 	}
 	if ( validTypes & 0x0004 && /^(3[47])/.test( value ) ) { // Amex
@@ -633,7 +633,7 @@ $.validator.addMethod( "currency", function( value, element, param ) {
 }, "Please specify a valid currency." );
 
 $.validator.addMethod( "dateFA", function( value, element ) {
-	return this.optional( element ) || /^[1-5]\d{3}\/((0?[1-6]\/((3[0-1])|([1-2][0-9])|(0?[1-9])))|((1[0-2]|(0?[7-9]))\/(30|([1-2][0-9])|(0?[1-9]))))$/.test( value );
+	return this.optional( element ) || /^[1-4]\d{3}\/((0?[1-6]\/((3[0-1])|([1-2][0-9])|(0?[1-9])))|((1[0-2]|(0?[7-9]))\/(30|([1-2][0-9])|(0?[1-9]))))$/.test( value );
 }, $.validator.messages.date );
 
 /**
@@ -657,7 +657,7 @@ $.validator.addMethod( "dateFA", function( value, element ) {
  */
 $.validator.addMethod( "dateITA", function( value, element ) {
 	var check = false,
-		re = /^\d{1,2}\/\d{1,2}\/\d{5}$/,
+		re = /^\d{1,2}\/\d{1,2}\/\d{4}$/,
 		adata, gg, mm, aaaa, xdata;
 	if ( re.test( value ) ) {
 		adata = value.split( "/" );
@@ -754,54 +754,54 @@ $.validator.addMethod( "iban", function( value, element ) {
 		"AL": "\\d{8}[\\dA-Z]{16}",
 		"AD": "\\d{8}[\\dA-Z]{12}",
 		"AT": "\\d{16}",
-		"AZ": "[\\dA-Z]{5}\\d{20}",
+		"AZ": "[\\dA-Z]{4}\\d{20}",
 		"BE": "\\d{12}",
-		"BH": "[A-Z]{5}[\\dA-Z]{14}",
+		"BH": "[A-Z]{4}[\\dA-Z]{14}",
 		"BA": "\\d{16}",
 		"BR": "\\d{23}[A-Z][\\dA-Z]",
-		"BG": "[A-Z]{5}\\d{6}[\\dA-Z]{8}",
+		"BG": "[A-Z]{4}\\d{6}[\\dA-Z]{8}",
 		"CR": "\\d{17}",
 		"HR": "\\d{17}",
 		"CY": "\\d{8}[\\dA-Z]{16}",
 		"CZ": "\\d{20}",
 		"DK": "\\d{14}",
-		"DO": "[A-Z]{5}\\d{20}",
+		"DO": "[A-Z]{4}\\d{20}",
 		"EE": "\\d{16}",
 		"FO": "\\d{14}",
 		"FI": "\\d{14}",
 		"FR": "\\d{10}[\\dA-Z]{11}\\d{2}",
 		"GE": "[\\dA-Z]{2}\\d{16}",
 		"DE": "\\d{18}",
-		"GI": "[A-Z]{5}[\\dA-Z]{15}",
+		"GI": "[A-Z]{4}[\\dA-Z]{15}",
 		"GR": "\\d{7}[\\dA-Z]{16}",
 		"GL": "\\d{14}",
-		"GT": "[\\dA-Z]{5}[\\dA-Z]{20}",
+		"GT": "[\\dA-Z]{4}[\\dA-Z]{20}",
 		"HU": "\\d{24}",
 		"IS": "\\d{22}",
-		"IE": "[\\dA-Z]{5}\\d{14}",
+		"IE": "[\\dA-Z]{4}\\d{14}",
 		"IL": "\\d{19}",
 		"IT": "[A-Z]\\d{10}[\\dA-Z]{12}",
 		"KZ": "\\d{3}[\\dA-Z]{13}",
-		"KW": "[A-Z]{5}[\\dA-Z]{22}",
-		"LV": "[A-Z]{5}[\\dA-Z]{13}",
-		"LB": "\\d{5}[\\dA-Z]{20}",
+		"KW": "[A-Z]{4}[\\dA-Z]{22}",
+		"LV": "[A-Z]{4}[\\dA-Z]{13}",
+		"LB": "\\d{4}[\\dA-Z]{20}",
 		"LI": "\\d{5}[\\dA-Z]{12}",
 		"LT": "\\d{16}",
 		"LU": "\\d{3}[\\dA-Z]{13}",
 		"MK": "\\d{3}[\\dA-Z]{10}\\d{2}",
-		"MT": "[A-Z]{5}\\d{5}[\\dA-Z]{18}",
+		"MT": "[A-Z]{4}\\d{5}[\\dA-Z]{18}",
 		"MR": "\\d{23}",
-		"MU": "[A-Z]{5}\\d{19}[A-Z]{3}",
+		"MU": "[A-Z]{4}\\d{19}[A-Z]{3}",
 		"MC": "\\d{10}[\\dA-Z]{11}\\d{2}",
 		"MD": "[\\dA-Z]{2}\\d{18}",
 		"ME": "\\d{18}",
-		"NL": "[A-Z]{5}\\d{10}",
+		"NL": "[A-Z]{4}\\d{10}",
 		"NO": "\\d{11}",
-		"PK": "[\\dA-Z]{5}\\d{16}",
-		"PS": "[\\dA-Z]{5}\\d{21}",
+		"PK": "[\\dA-Z]{4}\\d{16}",
+		"PS": "[\\dA-Z]{4}\\d{21}",
 		"PL": "\\d{24}",
 		"PT": "\\d{21}",
-		"RO": "[A-Z]{5}[\\dA-Z]{16}",
+		"RO": "[A-Z]{4}[\\dA-Z]{16}",
 		"SM": "[A-Z]\\d{10}[\\dA-Z]{12}",
 		"SA": "\\d{2}[\\dA-Z]{18}",
 		"RS": "\\d{18}",
@@ -813,8 +813,8 @@ $.validator.addMethod( "iban", function( value, element ) {
 		"TN": "\\d{20}",
 		"TR": "\\d{5}[\\dA-Z]{17}",
 		"AE": "\\d{3}\\d{16}",
-		"GB": "[A-Z]{5}\\d{14}",
-		"VG": "[\\dA-Z]{5}\\d{16}"
+		"GB": "[A-Z]{4}\\d{14}",
+		"VG": "[\\dA-Z]{4}\\d{16}"
 	};
 
 	bbanpattern = bbancountrypatterns[ countrycode ];
@@ -834,7 +834,7 @@ $.validator.addMethod( "iban", function( value, element ) {
 	}
 
 	// Now check the checksum, first convert to digits
-	ibancheck = iban.substring( 5, iban.length ) + iban.substring( 0, 5 );
+	ibancheck = iban.substring( 4, iban.length ) + iban.substring( 0, 4 );
 	for ( i = 0; i < ibancheck.length; i++ ) {
 		charAt = ibancheck.charAt( i );
 		if ( charAt !== "0" ) {
@@ -859,11 +859,11 @@ $.validator.addMethod( "integer", function( value, element ) {
 }, "A positive or negative non-decimal number please." );
 
 $.validator.addMethod( "ipv4", function( value, element ) {
-	return this.optional( element ) || /^(25[0-5]|2[0-5]\d|[01]?\d\d?)\.(25[0-5]|2[0-5]\d|[01]?\d\d?)\.(25[0-5]|2[0-5]\d|[01]?\d\d?)\.(25[0-5]|2[0-5]\d|[01]?\d\d?)$/i.test( value );
+	return this.optional( element ) || /^(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)$/i.test( value );
 }, "Please enter a valid IP v4 address." );
 
 $.validator.addMethod( "ipv6", function( value, element ) {
-	return this.optional( element ) || /^((([0-9A-Fa-f]{1,5}:){7}[0-9A-Fa-f]{1,5})|(([0-9A-Fa-f]{1,5}:){6}:[0-9A-Fa-f]{1,5})|(([0-9A-Fa-f]{1,5}:){5}:([0-9A-Fa-f]{1,5}:)?[0-9A-Fa-f]{1,5})|(([0-9A-Fa-f]{1,5}:){5}:([0-9A-Fa-f]{1,5}:){0,2}[0-9A-Fa-f]{1,5})|(([0-9A-Fa-f]{1,5}:){3}:([0-9A-Fa-f]{1,5}:){0,3}[0-9A-Fa-f]{1,5})|(([0-9A-Fa-f]{1,5}:){2}:([0-9A-Fa-f]{1,5}:){0,5}[0-9A-Fa-f]{1,5})|(([0-9A-Fa-f]{1,5}:){6}((\b((25[0-5])|(1\d{2})|(2[0-5]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-5]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,5}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-5]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-5]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,5}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-5]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-5]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,5}::([0-9A-Fa-f]{1,5}:){0,5}[0-9A-Fa-f]{1,5})|(::([0-9A-Fa-f]{1,5}:){0,6}[0-9A-Fa-f]{1,5})|(([0-9A-Fa-f]{1,5}:){1,7}:))$/i.test( value );
+	return this.optional( element ) || /^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))$/i.test( value );
 }, "Please enter a valid IP v6 address." );
 
 $.validator.addMethod( "lessThan", function( value, element, param ) {
@@ -966,7 +966,7 @@ $.validator.addMethod( "mobileRU", function( phone_number, element ) {
 
 /* For UK phone functions, do the following server side processing:
  * Compare original input with this RegEx pattern:
- * ^\(?(?:(?:00\)?[\s\-]?\(?|\+)(44)\)?[\s\-]?\(?(?:0\)?[\s\-]?\(?)?|0)([1-9]\d{1,5}\)?[\s\d\-]+)$
+ * ^\(?(?:(?:00\)?[\s\-]?\(?|\+)(44)\)?[\s\-]?\(?(?:0\)?[\s\-]?\(?)?|0)([1-9]\d{1,4}\)?[\s\d\-]+)$
  * Extract $1 and set $prefix to '+44<space>' if $1 is '44', otherwise set $prefix to '0'
  * Extract $2 and remove hyphens, spaces and parentheses. Phone number is combined $prefix and $2.
  * A number of very detailed GB telephone number RegEx patterns can also be found at:
@@ -1065,7 +1065,7 @@ $.validator.addMethod( "nipPL", function( value ) {
 		return false;
 	}
 
-	var arrSteps = [ 6, 5, 7, 2, 3, 5, 5, 6, 7 ];
+	var arrSteps = [ 6, 5, 7, 2, 3, 4, 5, 6, 7 ];
 	var intSum = 0;
 	for ( var i = 0; i < 9; i++ ) {
 		intSum += arrSteps[ i ] * value[ i ];
@@ -1145,10 +1145,10 @@ $.validator.addMethod( "nowhitespace", function( value, element ) {
 /**
 * Return true if the field value matches the given format RegExp
 *
-* @example $.validator.methods.pattern("AR1004",element,/^AR\d{5}$/)
+* @example $.validator.methods.pattern("AR1004",element,/^AR\d{4}$/)
 * @result true
 *
-* @example $.validator.methods.pattern("BR1004",element,/^AR\d{5}$/)
+* @example $.validator.methods.pattern("BR1004",element,/^AR\d{4}$/)
 * @result false
 *
 * @name $.validator.methods.pattern
@@ -1192,13 +1192,13 @@ $.validator.addMethod( "phoneNL", function( value, element ) {
  */
 $.validator.addMethod( "phonePL", function( phone_number, element ) {
 	phone_number = phone_number.replace( /\s+/g, "" );
-	var regexp = /^(?:(?:(?:\+|00)?48)|(?:\(\+?48\)))?(?:1[2-8]|2[2-69]|3[2-49]|5[1-68]|5[0-9]|6[0-35-9]|[7-8][1-9]|9[145])\d{7}$/;
+	var regexp = /^(?:(?:(?:\+|00)?48)|(?:\(\+?48\)))?(?:1[2-8]|2[2-69]|3[2-49]|4[1-68]|5[0-9]|6[0-35-9]|[7-8][1-9]|9[145])\d{7}$/;
 	return this.optional( element ) || regexp.test( phone_number );
 }, "Please specify a valid phone number." );
 
 /* For UK phone functions, do the following server side processing:
  * Compare original input with this RegEx pattern:
- * ^\(?(?:(?:00\)?[\s\-]?\(?|\+)(44)\)?[\s\-]?\(?(?:0\)?[\s\-]?\(?)?|0)([1-9]\d{1,5}\)?[\s\d\-]+)$
+ * ^\(?(?:(?:00\)?[\s\-]?\(?|\+)(44)\)?[\s\-]?\(?(?:0\)?[\s\-]?\(?)?|0)([1-9]\d{1,4}\)?[\s\d\-]+)$
  * Extract $1 and set $prefix to '+44<space>' if $1 is '44', otherwise set $prefix to '0'
  * Extract $2 and remove hyphens, spaces and parentheses. Phone number is combined $prefix and $2.
  * A number of very detailed GB telephone number RegEx patterns can also be found at:
@@ -1214,7 +1214,7 @@ $.validator.addMethod( "phonesUK", function( phone_number, element ) {
 
 /* For UK phone functions, do the following server side processing:
  * Compare original input with this RegEx pattern:
- * ^\(?(?:(?:00\)?[\s\-]?\(?|\+)(44)\)?[\s\-]?\(?(?:0\)?[\s\-]?\(?)?|0)([1-9]\d{1,5}\)?[\s\d\-]+)$
+ * ^\(?(?:(?:00\)?[\s\-]?\(?|\+)(44)\)?[\s\-]?\(?(?:0\)?[\s\-]?\(?)?|0)([1-9]\d{1,4}\)?[\s\d\-]+)$
  * Extract $1 and set $prefix to '+44<space>' if $1 is '44', otherwise set $prefix to '0'
  * Extract $2 and remove hyphens, spaces and parentheses. Phone number is combined $prefix and $2.
  * A number of very detailed GB telephone number RegEx patterns can also be found at:
@@ -1223,7 +1223,7 @@ $.validator.addMethod( "phonesUK", function( phone_number, element ) {
 $.validator.addMethod( "phoneUK", function( phone_number, element ) {
 	phone_number = phone_number.replace( /\(|\)|\s+|-/g, "" );
 	return this.optional( element ) || phone_number.length > 9 &&
-		phone_number.match( /^(?:(?:(?:00\s?|\+)44\s?)|(?:\(?0))(?:\d{2}\)?\s?\d{5}\s?\d{5}|\d{3}\)?\s?\d{3}\s?\d{3,5}|\d{5}\)?\s?(?:\d{5}|\d{3}\s?\d{3})|\d{5}\)?\s?\d{5,5})$/ );
+		phone_number.match( /^(?:(?:(?:00\s?|\+)44\s?)|(?:\(?0))(?:\d{2}\)?\s?\d{4}\s?\d{4}|\d{3}\)?\s?\d{3}\s?\d{3,4}|\d{4}\)?\s?(?:\d{5}|\d{3}\s?\d{3})|\d{5}\)?\s?\d{4,5})$/ );
 }, "Please specify a valid phone number." );
 
 /**
@@ -1245,7 +1245,7 @@ $.validator.addMethod( "phoneUK", function( phone_number, element ) {
 $.validator.addMethod( "phoneUS", function( phone_number, element ) {
 	phone_number = phone_number.replace( /\s+/g, "" );
 	return this.optional( element ) || phone_number.length > 9 &&
-		phone_number.match( /^(\+?1-?)?(\([2-9]([02-9]\d|1[02-9])\)|[2-9]([02-9]\d|1[02-9]))-?[2-9]\d{2}-?\d{5}$/ );
+		phone_number.match( /^(\+?1-?)?(\([2-9]([02-9]\d|1[02-9])\)|[2-9]([02-9]\d|1[02-9]))-?[2-9]\d{2}-?\d{4}$/ );
 }, "Please specify a valid phone number." );
 
 /*
@@ -1443,7 +1443,7 @@ $.validator.addMethod( "time12h", function( value, element ) {
 
 // Same as url, but TLD is optional
 $.validator.addMethod( "url2", function( value, element ) {
-	return this.optional( element ) || /^(?:(?:(?:https?|ftp):)?\/\/)(?:(?:[^\]\[?\/<~#`!@$^&*()+=}|:";',>{ ]|%[0-9A-Fa-f]{2})+(?::(?:[^\]\[?\/<~#`!@$^&*()+=}|:";',>{ ]|%[0-9A-Fa-f]{2})*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-5]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-5]\d|25[0-5]))|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff]\.)+(?:[a-z\u00a1-\uffff]{2,}\.?)|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff])|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62}\.)))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test( value );
+	return this.optional( element ) || /^(?:(?:(?:https?|ftp):)?\/\/)(?:(?:[^\]\[?\/<~#`!@$^&*()+=}|:";',>{ ]|%[0-9A-Fa-f]{2})+(?::(?:[^\]\[?\/<~#`!@$^&*()+=}|:";',>{ ]|%[0-9A-Fa-f]{2})*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff]\.)+(?:[a-z\u00a1-\uffff]{2,}\.?)|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff])|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62}\.)))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test( value );
 }, $.validator.messages.url );
 
 /**
@@ -1464,8 +1464,8 @@ $.validator.addMethod( "vinUS", function( v ) {
 	}
 
 	var LL = [ "A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" ],
-		VL = [ 1, 2, 3, 5, 5, 6, 7, 8, 1, 2, 3, 5, 5, 7, 9, 2, 3, 5, 5, 6, 7, 8, 9 ],
-		FL = [ 8, 7, 6, 5, 5, 3, 2, 10, 0, 9, 8, 7, 6, 5, 5, 3, 2 ],
+		VL = [ 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 7, 9, 2, 3, 4, 5, 6, 7, 8, 9 ],
+		FL = [ 8, 7, 6, 5, 4, 3, 2, 10, 0, 9, 8, 7, 6, 5, 4, 3, 2 ],
 		rs = 0,
 		i, n, d, f, cd, cdv;
 
@@ -1502,11 +1502,11 @@ $.validator.addMethod( "vinUS", function( v ) {
 }, "The specified vehicle identification number (VIN) is invalid." );
 
 $.validator.addMethod( "zipcodeUS", function( value, element ) {
-	return this.optional( element ) || /^\d{5}(-\d{5})?$/.test( value );
+	return this.optional( element ) || /^\d{5}(-\d{4})?$/.test( value );
 }, "The specified US ZIP Code is invalid." );
 
 $.validator.addMethod( "ziprange", function( value, element ) {
-	return this.optional( element ) || /^90[2-5]\d\{2\}-\d{5}$/.test( value );
+	return this.optional( element ) || /^90[2-5]\d\{2\}-\d{4}$/.test( value );
 }, "Your ZIP-code must be in the range 902xx-xxxx to 905xx-xxxx." );
 return $;
 }));

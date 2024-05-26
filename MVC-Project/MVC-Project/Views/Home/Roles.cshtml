@@ -1,0 +1,39 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<Role>
+@{
+}
+
+<style>
+    .div-table-item-text{
+        width:40%;
+    }
+</style>
+
+<div class="div-table-view" id="div-table-view">
+    <p class="div-table-title">Roles</p>
+    <div class="div-table-items">
+        <a class="submit-btn" asp-controller="Home" asp-action="AddRole">Add</a>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <div class="div-table-item">
+                <div class="div-table-item-text">
+                    @Model[i].Name
+                </div>
+                <div class="div-table-item-btn">
+                    <form asp-controller="Home" asp-action="CheckRole" method="post">
+                        <input type="hidden" name="id" value="@Model[i].Id" />
+                        <button class="submit-btn" type="submit">Check</button>
+                    </form>
+                </div>
+                <div class="div-table-item-btn">
+                    <form asp-controller="Home" asp-action="BidDelete" method="post">
+                        <input type="hidden" name="id" value="@Model[i].Id" />
+                        <button class="submit-btn" type="submit">Delete</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>

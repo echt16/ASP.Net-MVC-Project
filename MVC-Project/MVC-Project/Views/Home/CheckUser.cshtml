@@ -1,0 +1,207 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model UserViewModel
+@{
+}
+
+<style>
+    .img {
+        height: 50px;
+        width: auto;
+    }
+
+    .additional {
+        cursor: pointer;
+    }
+
+    #additional {
+        max-height: 0;
+        transition: max-height 1s ease;
+        overflow: hidden;
+    }
+
+        #additional.open {
+            overflow: visible;
+            max-height: 300px;
+        }
+
+    .additional img {
+        width: 30px;
+        height: 30px;
+        transition: transform 0.5s ease-in-out;
+        align-self: center;
+    }
+
+    .additional:hover > img {
+        transform: rotate(360deg);
+    }
+
+    .tmp {
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+    }
+
+    .modal-form {
+        width: 100%;
+    }
+</style>
+
+<div class="modal-window">
+    <div class="tmp">
+        <form onsubmit="function submitClick(event)" class="modal-form" id="modal-form" asp-controller="Home" asp-action="ChangeUser" method="post">
+            <input type="hidden" name="userId" value="@Model.User.Id" />
+            <input type="hidden" name="type" id="type" />
+            <div class="modal-form-group">
+                <p class="modal-form-title">
+                    User
+                </p>
+            </div>
+            <div class="modal-form-group">
+                <label class="modal-form-label">
+                    Image: <img src="@Model.User.ImageSrc" class="img" />
+                </label>
+                <input type="text" name="imgSrc" id="imgSrc" class="modal-form-input input" value="@Model.User.ImageSrc" required />
+            </div>
+            <div class="modal-form-group">
+                <label class="modal-form-label">
+                    Login:
+                </label>
+                <input type="text" name="login" class="modal-form-input input" value="@Model.Login" required />
+            </div>
+            <div class="modal-form-group">
+                <label class="modal-form-label">
+                    Firstname:
+                </label>
+                <input type="text" name="firstname" value="@Model.User.Firstname" class="modal-form-input input" required />
+            </div>
+            <div class="modal-form-group">
+                <label class="modal-form-label">
+                    Lastname:
+                </label>
+                <input type="text" name="lastname" value="@Model.User.Lastname" class="modal-form-input input" required />
+            </div>
+            <div class="modal-form-group">
+                <label class="modal-form-label">
+                    Role:
+                </label>
+                <select name="roleId" class="modal-form-input input">
+                    <option value="@Model.User.Role.Id">@Model.User.Role.Name</option>
+                    @for (int i = 0; i < Model.Roles.Count; i++)
+                    {
+                        if (Model.Roles[i].Id != @Model.User.Role.Id)
+                        {
+                            <option value="@Model.Roles[i].Id">@Model.Roles[i].Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="modal-form-group additional" onclick="additional(event)">
+                <img src="~/add.png" />
+            </div>
+            <div id="additional">
+                @if (Model.WorkerAdditional == null)
+                {
+                    <div class="modal-form-group">
+                        <label class="modal-form-label">
+                            Phone number:
+                        </label>
+                        <input type="text" name="phone" class="modal-form-input input" required />
+                    </div>
+                    <div class="modal-form-group">
+                        <label class="modal-form-label">
+                            Email:
+                        </label>
+                        <input type="email" name="email" class="modal-form-input input" required />
+                    </div>
+                    <div class="modal-form-group">
+                        <label class="modal-form-label">
+                            Position:
+                        </label>
+                        <select name="positionId" class="modal-form-input input" required>
+                            @for (int i = 0; i < Model.Positions.Count; i++)
+                            {
+                                <option value="@Model.Positions[i].Id">@Model.Positions[i].Name</option>
+                            }
+                        </select>
+                    </div>
+                }
+                else
+                {
+                    <div class="modal-form-group">
+                        <label class="modal-form-label">
+                            Phone number:
+                        </label>
+                        <input type="text" name="phone" value="@Model.ContactDetail.PhoneNumber" class="modal-form-input input" required />
+                    </div>
+                    <div class="modal-form-group">
+                        <label class="modal-form-label">
+                            Email:
+                        </label>
+                        <input type="email" name="email" value="@Model.ContactDetail.Email" class="modal-form-input input" required />
+                    </div>
+                    <div class="modal-form-group">
+                        <label class="modal-form-label">
+                            Position:
+                        </label>
+                        <select name="positionId" class="modal-form-input input" required>
+                            <option value="@Model.Positions.First(x => x.Id == Model.WorkerAdditional.PositionId).Id">@Model.Positions.First(x => x.Id == Model.WorkerAdditional.PositionId).Name</option>
+                            @for (int i = 0; i < Model.Positions.Count; i++)
+                            {
+                                if (Model.Positions[i].Id != Model.WorkerAdditional.PositionId)
+                                {
+                                    <option value="@Model.Positions[i].Id">@Model.Positions[i].Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                }
+            </div>
+            <div class="modal-form-group">
+                <button class="submit-btn" type="submit">Save</button>
+            </div>
+        </form>
+        <form asp-controller="Home" asp-action="DeleteUser" method="post">
+            <div class="modal-form-group">
+                <input type="hidden" name="userId" value="@Model.User.Id" />
+                <button class="submit-btn" type="submit">Delete user</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script name="Scripts">
+        function additional(event) {
+            var additionalDiv = document.getElementById('additional');
+            var hiddenInput = document.getElementById('type');
+            var phoneInput = document.querySelector('input[name="phone"]');
+            var emailInput = document.querySelector('input[name="email"]');
+            var positionInput = document.querySelector('select[name="positionId"]');
+
+
+            if (additionalDiv.classList.contains('open')) {
+                additionalDiv.classList.remove('open');
+                hiddenInput.value = "without";
+                phoneInput.removeAttribute("required")
+                emailInput.removeAttribute("required")
+                positionInput.removeAttribute("required")
+            } else {
+                additionalDiv.classList.add('open');
+                hiddenInput.value = "with";
+                phoneInput.setAttribute("required", "required")
+                emailInput.setAttribute("required", "required")
+                positionInput.setAttribute("required", "required")
+            }
+        }
+        function submitClick(event) {
+            event.preventDefault();
+            var url = document.getElementById('imgSrc').value;
+            const img = new Image();
+            img.onload = function () { document.querySelector("#modal-form").submit(); }
+            img.onerror = function () { alert(`unvalid src: ${url}`); }
+            img.src = url;
+        }
+    </script>
+}
