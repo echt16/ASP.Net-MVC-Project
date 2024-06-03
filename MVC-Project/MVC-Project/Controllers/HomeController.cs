@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_Project.Models;
@@ -181,62 +183,6 @@ namespace MVC_Project.Controllers
             return RedirectToAction("Account");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> WorkerAdditional(string login, string phone, string email, int positionId, int roleId, string type)
-        {
-            if (!Context.LoginsPasswords.Any(x => x.Login == login))
-                return View("ErrorMessage", 2);
-            int userId = Context.Users.First(x => x.LoginPasswordId == Context.LoginsPasswords.First(x => x.Login == login).Id).Id;
-            WorkerAdditional? wadd = Context.WorkersAdditionals.FirstOrDefault(x => x.UserId == userId);
-            if (type == "delete")
-            {
-                if (wadd == null)
-                    return View("ErrorMessage", 5);
-
-                Context.WorkersAdditionals.Remove(wadd);
-                await Context.SaveChangesAsync();
-            }
-            else if (type == "change")
-            {
-                if (wadd == null)
-                {
-                    wadd = new WorkerAdditional();
-                    ContactDetail cd = new ContactDetail() { Email = email, PhoneNumber = phone };
-                    Context.ContactDetails.Add(cd);
-                    await Context.SaveChangesAsync();
-                    wadd.ContactDetailId = cd.Id;
-                    wadd.UserId = userId;
-                    wadd.PositionId = positionId;
-                    Context.WorkersAdditionals.Add(wadd);
-                    Context.Users.First(x => x.Id == userId).RoleId = roleId;
-                    await Context.SaveChangesAsync();
-                }
-                else
-                {
-                    Context.WorkersAdditionals.First(x => x.Id == wadd.Id).PositionId = positionId;
-                    Context.ContactDetails.First(x => x.Id == wadd.ContactDetailId).Email = email;
-                    Context.ContactDetails.First(x => x.Id == wadd.ContactDetailId).PhoneNumber = phone;
-                    Context.Users.First(x => x.Id == userId).RoleId = roleId;
-                    await Context.SaveChangesAsync();
-                }
-            }
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public IActionResult WorkerAdditional()
-        {
-            if (!IsAuthentificated())
-                return View("Authorization");
-            if (!CheckAccesses("WorkerAdditional"))
-                return View("ErrorMessage", 3);
-            WorkerAdditionalViewModel workerAdditionalViewModel = new WorkerAdditionalViewModel()
-            {
-                Positions = Context.Positions.ToList(),
-                Roles = Context.Roles.ToList()
-            };
-            return View(workerAdditionalViewModel);
-        }
 
         [HttpGet]
         public IActionResult Roles()
@@ -254,21 +200,51 @@ namespace MVC_Project.Controllers
         {
             if (!IsAuthentificated())
                 return View("Authorization");
+            if (!CheckAccesses("CheckRole"))
+                return View("ErrorMessage", 3);
+            List<AppAccess> appAccesses = Context.AppAccesses.ToList();
+            Dictionary<AppAccess, List<AdditionalAppAccess>> nmodel = new Dictionary<AppAccess, List<AdditionalAppAccess>>();
+            for (int i = 0; i < appAccesses.Count; i++)
+            {
+                nmodel.Add(appAccesses[i], Context.AdditionalAppAccesses.Where(x => x.AppAccessId == appAccesses[i].Id).ToList());
+            }
             RoleViewModel checkRoleModelView = new RoleViewModel()
             {
-                AllAppAccess = Context.AppAccesses.ToList()
+                AppAccesses = nmodel
             };
             checkRoleModelView.Role = Context.Roles.First(x => x.Id == id);
             int roleId = checkRoleModelView.Role.Id;
-            checkRoleModelView.AppAccessForRole = Context.AppAccesses.Where(x => Context.RolesAppAccesses.Where(x => x.RoleId == roleId).Select(x => x.AppAccessId).Contains(x.Id)).ToList();
+            List<AppAccess> appAccessesForRole = Context.AppAccesses.Where(x => Context.RolesAppAccesses.Where(x => x.RoleId == roleId).Select(x => x.AppAccessId).Contains(x.Id)).ToList();
+            Dictionary<AppAccess, List<AdditionalAppAccess>> nmodelForRole = new Dictionary<AppAccess, List<AdditionalAppAccess>>();
+            for (int i = 0; i < appAccessesForRole.Count; i++)
+            {
+                nmodelForRole.Add(appAccessesForRole[i], Context.AdditionalAppAccesses.Where(x => x.AppAccessId == appAccessesForRole[i].Id && Context.RolesAdditionalAppAccesses.Any(y => y.AdditionalAppAccessId == x.Id && y.RoleId == roleId)).ToList());
+            }
+            checkRoleModelView.AppAccessesForRole = nmodelForRole;
             return View(checkRoleModelView);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeRoleAccesses(int roleId, int[] accesses)
+        public async Task<IActionResult> RoleDelete(int id)
         {
             if (!IsAuthentificated())
                 return View("Authorization");
+            if (!CheckAccesses("RoleDelete"))
+                return View("ErrorMessage", 3);
+            while (Context.RolesAppAccesses.Any(x => x.RoleId == id))
+                Context.RolesAppAccesses.Remove(Context.RolesAppAccesses.First(x => x.RoleId == id));
+            Context.Roles.Remove(Context.Roles.First(x => x.Id == id));
+            await Context.SaveChangesAsync();
+            return RedirectToAction("Roles");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeRoleAccesses(int roleId, int[] accesses, int[] additionals)
+        {
+            if (!IsAuthentificated())
+                return View("Authorization");
+            if (!CheckAccesses("ChangeRoleAccesses"))
+                return View("ErrorMessage", 3);
             foreach (int item in accesses)
             {
                 if (!Context.RolesAppAccesses.Any(x => x.RoleId == roleId && x.AppAccessId == item))
@@ -281,7 +257,28 @@ namespace MVC_Project.Controllers
                 List<RoleAppAccess> roleAppAccesses = Context.RolesAppAccesses.Where(x => x.RoleId == roleId && !accesses.Contains(x.AppAccessId)).ToList();
                 for (int i = 0; i < roleAppAccesses.Count; i++)
                 {
+                    List<RoleAdditionalAppAccess> additionalAppAccesses = Context.RolesAdditionalAppAccesses.Where(x => Context.AdditionalAppAccesses.Select(y => y.AppAccessId).Contains(roleAppAccesses[i].AppAccessId)).ToList();
+                    for (int j = 0; j < additionalAppAccesses.Count; j++)
+                    {
+                        Context.RolesAdditionalAppAccesses.Remove(additionalAppAccesses[i]);
+                    }
                     Context.RolesAppAccesses.Remove(roleAppAccesses[i]);
+                }
+            }
+            await Context.SaveChangesAsync();
+            foreach (int item in additionals)
+            {
+                if (!Context.RolesAdditionalAppAccesses.Any(x => x.RoleId == roleId && x.AdditionalAppAccessId == item))
+                {
+                    Context.RolesAdditionalAppAccesses.Add(new RoleAdditionalAppAccess() { AdditionalAppAccessId = item, RoleId = roleId });
+                }
+            }
+            if (Context.RolesAdditionalAppAccesses.Any(x => x.RoleId == roleId && !additionals.Contains(x.AdditionalAppAccessId)))
+            {
+                List<RoleAdditionalAppAccess> roleAppAccesses = Context.RolesAdditionalAppAccesses.Where(x => x.RoleId == roleId && !additionals.Contains(x.AdditionalAppAccessId)).ToList();
+                for (int i = 0; i < roleAppAccesses.Count; i++)
+                {
+                    Context.RolesAdditionalAppAccesses.Remove(roleAppAccesses[i]);
                 }
             }
             await Context.SaveChangesAsync();
@@ -293,14 +290,30 @@ namespace MVC_Project.Controllers
         {
             if (!IsAuthentificated())
                 return View("Authorization");
-            return View(Context.AppAccesses.ToList());
+            if (!CheckAccesses("AddRole"))
+                return View("ErrorMessage", 3);
+
+            List<AppAccess> appAccesses = Context.AppAccesses.ToList();
+            Dictionary<AppAccess, List<AdditionalAppAccess>> nmodel = new Dictionary<AppAccess, List<AdditionalAppAccess>>();
+            for (int i = 0; i < appAccesses.Count; i++)
+            {
+                nmodel.Add(appAccesses[i], Context.AdditionalAppAccesses.Where(x => x.AppAccessId == appAccesses[i].Id).ToList());
+            }
+            AddRoleModelView model = new AddRoleModelView()
+            {
+                AppAccesses = nmodel
+            };
+
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddRole(string name, int[] accesses)
+        public async Task<IActionResult> AddRole(string name, int[] accesses, int[] additionals)
         {
             if (!IsAuthentificated())
                 return View("Authorization");
+            if (!CheckAccesses("AddRole"))
+                return View("ErrorMessage", 3);
             Role role = new Role()
             {
                 Name = name
@@ -314,6 +327,14 @@ namespace MVC_Project.Controllers
                 {
                     RoleId = roleId,
                     AppAccessId = i
+                });
+            }
+            foreach (int i in additionals)
+            {
+                Context.RolesAdditionalAppAccesses.Add(new RoleAdditionalAppAccess()
+                {
+                    RoleId = roleId,
+                    AdditionalAppAccessId = i
                 });
             }
             await Context.SaveChangesAsync();
@@ -349,6 +370,8 @@ namespace MVC_Project.Controllers
         {
             if (!IsAuthentificated())
                 return View("Authorization");
+            if (!CheckAccesses("CheckUser"))
+                return View("ErrorMessage", 3);
             UserViewModel userViewModel = new UserViewModel()
             {
                 User = Context.Users.First(x => x.Id == userId),
@@ -363,18 +386,175 @@ namespace MVC_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult ChangeUser(int userId, string type, string imgSrc, string login, string firstname, string lastname, int roleId, string phone, string email, int positionId)
+        public async Task<IActionResult> ChangeUser(int userId, string type, string imgSrc, string login, string firstname, string lastname, int roleId, string phone, string email, int positionId)
         {
-            if(type == "with")
+            if (!IsAuthentificated())
+                return View("Authorization");
+            if (!CheckAccesses("ChangeUser"))
+                return View("ErrorMessage", 3);
+            if (Context.LoginsPasswords.Any(x => x.Login == login))
+                return View("ErrorMessage", 0);
+            Context.LoginsPasswords.First(x => x.Id == Context.Users.First(x => x.Id == userId).LoginPasswordId).Login = login;
+            Context.Users.First(x => x.Id == userId).ImageSrc = imgSrc;
+            Context.Users.First(x => x.Id == userId).Firstname = firstname;
+            Context.Users.First(x => x.Id == userId).Lastname = lastname;
+            Context.Users.First(x => x.Id == userId).RoleId = roleId;
+            await Context.SaveChangesAsync();
+            if (type == "with")
             {
-
+                WorkerAdditional? wadd = Context.WorkersAdditionals.FirstOrDefault(x => x.UserId == userId);
+                if (wadd == null)
+                {
+                    wadd = new WorkerAdditional();
+                    ContactDetail cd = new ContactDetail() { Email = email, PhoneNumber = phone };
+                    Context.ContactDetails.Add(cd);
+                    await Context.SaveChangesAsync();
+                    wadd.ContactDetailId = cd.Id;
+                    wadd.UserId = userId;
+                    wadd.PositionId = positionId;
+                    Context.WorkersAdditionals.Add(wadd);
+                    await Context.SaveChangesAsync();
+                }
+                else
+                {
+                    Context.WorkersAdditionals.First(x => x.Id == wadd.Id).PositionId = positionId;
+                    Context.ContactDetails.First(x => x.Id == wadd.ContactDetailId).Email = email;
+                    Context.ContactDetails.First(x => x.Id == wadd.ContactDetailId).PhoneNumber = phone;
+                    await Context.SaveChangesAsync();
+                }
             }
-            else if(type == "without")
-            {
-
-            }
-            return View();
+            return RedirectToAction("Users");
         }
+
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            if (!IsAuthentificated())
+                return View("Authorization");
+            if (!CheckAccesses("DeleteUser"))
+                return View("ErrorMessage", 3);
+            User user = Context.Users.First(x => x.Id == userId);
+            Context.LoginsPasswords.Remove(Context.LoginsPasswords.First(x => x.Id == user.LoginPasswordId));
+            if (Context.WorkersAdditionals.Any(x => x.UserId == userId))
+            {
+                Context.WorkersAdditionals.Remove(Context.WorkersAdditionals.First(x => x.UserId == userId));
+            }
+            Context.Users.Remove(Context.Users.First(x => x.Id == userId));
+            await Context.SaveChangesAsync();
+            return RedirectToAction("Users");
+        }
+
+        public class PageRequest
+        {
+            public string Page { get; set; }
+        }
+
+        [HttpPost]
+        public IActionResult CheckPage([FromBody] PageRequest request)
+        {
+            string page = request.Page;
+            if (!page.EndsWith(".cshtml"))
+                page += ".cshtml";
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Views", "Home", page.TrimStart('/'));
+            if (System.IO.File.Exists(path))
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Accesses()
+        {
+            if (!IsAuthentificated())
+                return View("Authorization");
+            if (!CheckAccesses("Accesses"))
+                return View("ErrorMessage", 3);
+            AccessesViewModel accessesViewModel = new AccessesViewModel()
+            {
+                AppAccesses = Context.AppAccesses.ToList(),
+            };
+            return View(accessesViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult CheckAccess(int id)
+        {
+
+            if (!IsAuthentificated())
+                return View("Authorization");
+            if (!CheckAccesses("CheckAccess"))
+                return View("ErrorMessage", 3);
+
+            return View(Context.AppAccesses.First(x => x.Id == id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeAccess(int id, string name, string href)
+        {
+            if (!IsAuthentificated())
+                return View("Authorization");
+            if (!CheckAccesses("ChangeAccess"))
+                return View("ErrorMessage", 3);
+            Context.AppAccesses.First(x => x.Id == id).Name = name;
+            Context.AppAccesses.First(x => x.Id == id).Href = href;
+            await Context.SaveChangesAsync();
+            return RedirectToAction("Accesses");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddAccess(string name, string href)
+        {
+
+            if (!IsAuthentificated())
+                return View("Authorization");
+            if (!CheckAccesses("Bids"))
+                return View("AddAccess", 3);
+            if (Context.AppAccesses.Any(x => x.Name == name) || Context.AppAccesses.Any(x => x.Href == href))
+                return View("ErrorMessage", 5);
+            Context.AppAccesses.Add(new AppAccess()
+            {
+                Href = href,
+                Name = name
+            });
+            await Context.SaveChangesAsync();
+            return RedirectToAction("Accesses");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AccessDelete(int id)
+        {
+            if (!IsAuthentificated())
+                return View("Authorization");
+            if (!CheckAccesses("AccessDelete"))
+                return View("ErrorMessage", 3);
+            while (Context.RolesAppAccesses.Any(x => x.AppAccessId == id))
+                Context.RolesAppAccesses.Remove(Context.RolesAppAccesses.First(x => x.AppAccessId == id));
+            Context.AppAccesses.Remove(Context.AppAccesses.First(x => x.Id == id));
+            await Context.SaveChangesAsync();
+            return RedirectToAction("Accesses");
+        }
+
+        [HttpGet]
+        public IActionResult AdditionalAccesses()
+        {
+            List<AppAccess> appAccesses = Context.AppAccesses.ToList();
+            Dictionary<AppAccess, List<AdditionalAppAccess>> nmodel = new Dictionary<AppAccess, List<AdditionalAppAccess>>();
+            for (int i = 0; i < appAccesses.Count; i++)
+            {
+                if (Context.AdditionalAppAccesses.Where(x => x.AppAccessId == appAccesses[i].Id).Count() > 0)
+                    nmodel.Add(appAccesses[i], Context.AdditionalAppAccesses.Where(x => x.AppAccessId == appAccesses[i].Id).ToList());
+            }
+            AdditionalAccessesViewModel model = new AdditionalAccessesViewModel()
+            {
+                AppAccesses = nmodel
+            };
+            return View(model);
+        }
+
+
 
         public IActionResult Privacy()
         {
@@ -440,11 +620,22 @@ namespace MVC_Project.Controllers
         private bool CheckAccesses(string pageName)
         {
             AppAccess? appAccess = Context.AppAccesses.FirstOrDefault(x => x.Href == pageName);
+            AdditionalAppAccess? additionalAppAccess = Context.AdditionalAppAccesses.FirstOrDefault(x => x.Href == pageName);
+            if (appAccess == null && additionalAppAccess == null)
+                return true;
             string roleStr = GetRole();
             Role? role = Context.Roles.FirstOrDefault(x => x.Name == roleStr);
-            if (appAccess == null || role == null)
+            if (role == null)
                 return false;
-            return Context.RolesAppAccesses.Where(x => x.AppAccessId == appAccess.Id).Any(x => x.RoleId == role.Id);
+            if (appAccess != null)
+            {
+                return Context.RolesAppAccesses.Any(x => x.RoleId == role.Id && x.AppAccessId == appAccess.Id);
+            }
+            if (additionalAppAccess != null)
+            {
+                return Context.RolesAdditionalAppAccesses.Any(x => x.RoleId == role.Id && x.AdditionalAppAccessId == additionalAppAccess.Id);
+            }
+            return false;
         }
 
         private bool CheckAuthorization(string role)

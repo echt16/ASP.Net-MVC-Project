@@ -1,0 +1,50 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model AppAccess
+@{
+}
+<div class="modal-window">
+    <form class="modal-form" asp-controller="Home" asp-action="ChangeAccess" method="post" onsubmit="checkPageExists(event)">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <div class="modal-form-group">
+            <p class="modal-form-title">
+                Access
+            </p>
+        </div>
+        <div class="modal-form-group">
+            <label class="modal-form-label">
+                Name:
+            </label>
+            <input value="@Model.Name" type="text" name="name" class="modal-form-input input" required />
+        </div>
+        <div class="modal-form-group">
+            <label class="modal-form-label">
+                Href:
+            </label>
+            <input value="@Model.Href" type="text" name="href" class="modal-form-input input" required />
+        </div>
+        <div class="modal-form-group">
+            <button type="submit" class="submit-btn">Save</button>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <script name="Scripts">
+        function checkPageExists() {
+            event.preventDefault();
+            let pagePath = document.getElementsByName("href").item(0).value;
+            fetch('/Home/CheckPage', { method: 'post', headers: { "Content-Type": "application/json", }, body: JSON.stringify({ page: pagePath }) })
+                .then(response => {
+                    if (response.ok) {
+                        document.querySelector(".modal-form").submit();
+                    } else {
+                        alert(`Page does not exist: ${pagePath}`);
+                    }
+                })
+                .catch(error => {
+                    alert(`Error checking page: ${pagePath}`, error);
+                });
+        }
+    </script>
+}

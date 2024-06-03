@@ -1,0 +1,30 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="modal-window">
+    <form class="modal-form" asp-controller="Home" asp-action="AddAdditionalAccess" method="post" onsubmit="checkPageExists(event)">
+        <div class="modal-form-group">
+            <p class="modal-form-title">
+                Access
+            </p>
+        </div>
+        <div class="modal-form-group">
+            <label class="modal-form-label">
+                Name:
+            </label>
+            <input type="text" name="name" class="modal-form-input input" required />
+        </div>
+        <div class="modal-form-group">
+            <label class="modal-form-label">
+                Href:
+            </label>
+            <input type="text" name="href" class="modal-form-input input" required />
+        </div>
+        <div class="modal-form-group">
+            <button type="submit" class="submit-btn">Save</button>
+        </div>
+    </form>
+</div>

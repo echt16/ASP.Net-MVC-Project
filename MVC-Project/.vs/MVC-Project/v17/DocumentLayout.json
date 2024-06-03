@@ -1,0 +1,146 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Ferrum\\source\\repos\\ASP.Net MVC-Project\\MVC-Project\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5933FE5A-5B94-4C29-89E9-1843FA53EB93}|MVC-Project\\MVC-Project.csproj|c:\\users\\ferrum\\source\\repos\\asp.net mvc-project\\mvc-project\\mvc-project\\views\\home\\agreements.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{5933FE5A-5B94-4C29-89E9-1843FA53EB93}|MVC-Project\\MVC-Project.csproj|solutionrelative:mvc-project\\views\\home\\agreements.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5933FE5A-5B94-4C29-89E9-1843FA53EB93}|MVC-Project\\MVC-Project.csproj|c:\\users\\ferrum\\source\\repos\\asp.net mvc-project\\mvc-project\\mvc-project\\views\\home\\additionalaccesses.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{5933FE5A-5B94-4C29-89E9-1843FA53EB93}|MVC-Project\\MVC-Project.csproj|solutionrelative:mvc-project\\views\\home\\additionalaccesses.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5933FE5A-5B94-4C29-89E9-1843FA53EB93}|MVC-Project\\MVC-Project.csproj|c:\\users\\ferrum\\source\\repos\\asp.net mvc-project\\mvc-project\\mvc-project\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5933FE5A-5B94-4C29-89E9-1843FA53EB93}|MVC-Project\\MVC-Project.csproj|solutionrelative:mvc-project\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5933FE5A-5B94-4C29-89E9-1843FA53EB93}|MVC-Project\\MVC-Project.csproj|c:\\users\\ferrum\\source\\repos\\asp.net mvc-project\\mvc-project\\mvc-project\\views\\home\\addaccess.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{5933FE5A-5B94-4C29-89E9-1843FA53EB93}|MVC-Project\\MVC-Project.csproj|solutionrelative:mvc-project\\views\\home\\addaccess.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5933FE5A-5B94-4C29-89E9-1843FA53EB93}|MVC-Project\\MVC-Project.csproj|c:\\users\\ferrum\\source\\repos\\asp.net mvc-project\\mvc-project\\mvc-project\\views\\home\\checkaccess.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{5933FE5A-5B94-4C29-89E9-1843FA53EB93}|MVC-Project\\MVC-Project.csproj|solutionrelative:mvc-project\\views\\home\\checkaccess.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 129,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{fbcae063-e2c0-4ab1-a516-996ea3dafb72}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AdditionalAccesses.cshtml",
+              "DocumentMoniker": "C:\\Users\\Ferrum\\source\\repos\\ASP.Net MVC-Project\\MVC-Project\\MVC-Project\\Views\\Home\\AdditionalAccesses.cshtml",
+              "RelativeDocumentMoniker": "MVC-Project\\Views\\Home\\AdditionalAccesses.cshtml",
+              "ToolTip": "C:\\Users\\Ferrum\\source\\repos\\ASP.Net MVC-Project\\MVC-Project\\MVC-Project\\Views\\Home\\AdditionalAccesses.cshtml",
+              "RelativeToolTip": "MVC-Project\\Views\\Home\\AdditionalAccesses.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-06-03T15:42:52.124Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Agreements.cshtml",
+              "DocumentMoniker": "C:\\Users\\Ferrum\\source\\repos\\ASP.Net MVC-Project\\MVC-Project\\MVC-Project\\Views\\Home\\Agreements.cshtml",
+              "RelativeDocumentMoniker": "MVC-Project\\Views\\Home\\Agreements.cshtml",
+              "ToolTip": "C:\\Users\\Ferrum\\source\\repos\\ASP.Net MVC-Project\\MVC-Project\\MVC-Project\\Views\\Home\\Agreements.cshtml",
+              "RelativeToolTip": "MVC-Project\\Views\\Home\\Agreements.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAEAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-06-03T13:19:11.939Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AddAccess.cshtml",
+              "DocumentMoniker": "C:\\Users\\Ferrum\\source\\repos\\ASP.Net MVC-Project\\MVC-Project\\MVC-Project\\Views\\Home\\AddAccess.cshtml",
+              "RelativeDocumentMoniker": "MVC-Project\\Views\\Home\\AddAccess.cshtml",
+              "ToolTip": "C:\\Users\\Ferrum\\source\\repos\\ASP.Net MVC-Project\\MVC-Project\\MVC-Project\\Views\\Home\\AddAccess.cshtml",
+              "RelativeToolTip": "MVC-Project\\Views\\Home\\AddAccess.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAOAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-29T15:28:37.114Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CheckAccess.cshtml",
+              "DocumentMoniker": "C:\\Users\\Ferrum\\source\\repos\\ASP.Net MVC-Project\\MVC-Project\\MVC-Project\\Views\\Home\\CheckAccess.cshtml",
+              "RelativeDocumentMoniker": "MVC-Project\\Views\\Home\\CheckAccess.cshtml",
+              "ToolTip": "C:\\Users\\Ferrum\\source\\repos\\ASP.Net MVC-Project\\MVC-Project\\MVC-Project\\Views\\Home\\CheckAccess.cshtml",
+              "RelativeToolTip": "MVC-Project\\Views\\Home\\CheckAccess.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACQAAACSAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-29T15:28:00.949Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\Ferrum\\source\\repos\\ASP.Net MVC-Project\\MVC-Project\\MVC-Project\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "MVC-Project\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\Ferrum\\source\\repos\\ASP.Net MVC-Project\\MVC-Project\\MVC-Project\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "MVC-Project\\Controllers\\HomeController.cs",
+              "ViewState": "AQIAAAkCAAAAAAAAAAAgwCwCAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-24T15:35:44.684Z"
+            }
+          ]
+        },
+        {
+          "DockedHeight": 36,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        },
+        {
+          "DockedHeight": 64,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model List<AppAccess>
+@model AddRoleModelView
 @{
 }
 
@@ -32,21 +32,25 @@
             <div class="div-table-items">
                 @{
                     int i = 0;
-                    while (Model.Count > i)
+                    foreach (var item in Model.AppAccesses)
                     {
                         <div class="div-table-item">
-                            @for (int j = 0; j < 3; j++)
-                            {
-                                <div class="div-table-item-text">
-                                    <input class="form-check-input" type="checkbox" name="accesses" value="@Model[i].Id" /> @Model[i].Name
-                                </div>
-                                i++;
-                                if (Model.Count <= i)
-                                {
-                                    break;
-                                }
-                            }
+                            <div class="div-table-item-text">
+                                <input class="form-check-input" type="checkbox" name="accesses" value="@item.Key.Id" /> <strong>@item.Key.Name:</strong>
+                            </div>
                         </div>
+                        for (int j = 0; j < item.Value.Count; j = j)
+                        {
+                            <div class="div-table-item">
+                                @for (int k = 0; k < 3 && j < item.Value.Count; k++)
+                                {
+                                    <div class="div-table-item-text">
+                                        <input class="form-check-input" type="checkbox" name="additionals" value="@item.Value[j].Id" /> @item.Value[j].Name
+                                    </div>
+                                    j++;
+                                }
+                            </div>
+                        }
                     }
                 }
             </div>

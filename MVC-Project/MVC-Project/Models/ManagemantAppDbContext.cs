@@ -22,6 +22,8 @@ namespace MVC_Project.Models
         public DbSet<Bid> Bids { get; set; }
         public DbSet<Position> Positions { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<AdditionalAppAccess> AdditionalAppAccesses { get; set; }
+        public DbSet<RoleAdditionalAppAccess> RolesAdditionalAppAccesses { get; set; }
         public ManagemantAppDbContext(DbContextOptions<ManagemantAppDbContext> options) : base(options) { Database.EnsureCreated(); }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
